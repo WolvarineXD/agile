@@ -4,10 +4,9 @@ import path from "path";
 import { createHtmlPlugin } from 'vite-plugin-html';
 
 export default defineConfig({
-  server: {
-    host: true,
-    port: 8080,
-  },
+  base: '/agile/', // 👈 this must match your repo name
+  plugins: [react()],
+})
   plugins: [
     react(),
     createHtmlPlugin({
