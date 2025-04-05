@@ -14,9 +14,7 @@ export default defineConfig({
       minify: true,
       inject: {
         data: {
-          base: process.env.NODE_ENV === 'production' 
-            ? '<base href="/agile/" />' 
-            : '<base href="/" />'
+          base: '<base href="/agile/" />' // Simplified for GitHub Pages
         }
       }
     })
@@ -28,11 +26,11 @@ export default defineConfig({
     },
   },
   publicDir: "public",
-  base: process.env.NODE_ENV === 'production' ? "/agile/" : "/",
+  base: "/agile/", // Simplified to always use GitHub Pages path
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    chunkSizeWarningLimit: 2500, // Increased for large UI libraries
+    chunkSizeWarningLimit: 2500,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, "index.html")
