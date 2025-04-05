@@ -18,51 +18,42 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1600,
+    chunkSizeWarningLimit: 2000, // Increased for Radix UI + shadcn
     rollupOptions: {
       input: path.resolve(__dirname, "index.html"),
       output: {
-        manualChunks: {
-          react: ["react", "react-dom", "react-router-dom"],
-          radix: [
-            "@radix-ui/react-accordion",
-            "@radix-ui/react-alert-dialog",
-            "@radix-ui/react-aspect-ratio",
-            "@radix-ui/react-avatar",
-            "@radix-ui/react-checkbox",
-            "@radix-ui/react-collapsible",
-            "@radix-ui/react-context-menu",
-            "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-hover-card",
-            "@radix-ui/react-label",
-            "@radix-ui/react-menubar",
-            "@radix-ui/react-navigation-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-progress",
-            "@radix-ui/react-radio-group",
-            "@radix-ui/react-scroll-area",
-            "@radix-ui/react-select",
-            "@radix-ui/react-separator",
-            "@radix-ui/react-slider",
-            "@radix-ui/react-slot",
-            "@radix-ui/react-switch",
-            "@radix-ui/react-tabs",
-            "@radix-ui/react-toast",
-            "@radix-ui/react-toggle",
-            "@radix-ui/react-toggle-group",
-            "@radix-ui/react-tooltip"
-          ],
-          ui: [
-            "tailwind-merge",
-            "class-variance-authority",
-            "lucide-react"
-          ],
-          utils: ["zod", "date-fns", "framer-motion"],
+        manualChunks: (id) => {
+          if (id.includes('node_modules')) {
+            // Group Radix packages together
+            if (id.includes('@radix-ui')) {
+              return 'radix';
+            }
+            // Group UI libraries
+            if (id.includes('tailwind-merge') || 
+                id.includes('class-variance-authority') || 
+                id.includes('lucide-react')) {
+              return 'ui';
+            }
+            // Group utility libraries
+            if (id.includes('zod') || 
+                id.includes('date-fns') || 
+                id.includes('framer-motion')) {
+              return 'utils';
+            }
+            // Group React dependencies
+            if (id.includes('react') || 
+                id.includes('react-dom') || 
+                id.includes('react-router-dom')) {
+              return 'react-vendor';
+            }
+            return 'vendor';
+          }
         },
         chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash][extname]",
+        entryFileNames: "assets/[name]-[hash].js",
       },
     },
   },
-  base: "./",
+  base: "/", // Changed from "./" to "/" for Vercel compatibility
 });
