@@ -16,11 +16,6 @@
   "predeploy": "npm run build",
   "deploy": "gh-pages -d dist"
 },
-"devDependencies": {
-  // Keep your existing devDependencies and ADD these:
-  "gh-pages": "^6.1.0",
-  "vite-plugin-html": "^1.0.1"
-}
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
